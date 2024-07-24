@@ -1,6 +1,9 @@
 import { useForm } from "react-hook-form";
 import { PiEnvelopeSimpleFill } from "react-icons/pi";
 import { PiLockKeyFill } from "react-icons/pi";
+import {useCreateUserWithEmailAndPassword} from 'react-firebase-hooks/auth'
+import { auth } from "@/app/firebase/config";
+// import { createUserWithEmailAndPassword } from "firebase/auth";
 
 type FormFields = {
     email: string;
@@ -14,15 +17,22 @@ type FormChange = {
 const SignupForm = (props: FormChange) => {
     //creating useState to store requirement states
     const { register, handleSubmit, watch, reset, setError } = useForm<FormFields>();
-
+    const [ createUserWithEmailAndPassword ] = useCreateUserWithEmailAndPassword(auth);
     const watchForEmail = watch("email", "");
     const watchForPassword = watch("password", "");
 
     //Server logic for form submission
-    async function onSubmit(data: FormFields) {
-
-        console.log(data);
-    }
+    async function onSubmit(data: FormFields){
+        if(data.password!== data.confirmPassword && data.password.length >= 8 && data.email.includes('@') && data.email.includes('.')){
+            try {
+                const res = await createUserWithEmailAndPassword(data.email, data.password);
+                console.log(res);
+                
+            } catch (error) {
+                console.log(error);
+                
+            }
+        }
 
     return (
         <div className="w-full md:w-[70%] text-dark-light lg:w-[50%] flex">
