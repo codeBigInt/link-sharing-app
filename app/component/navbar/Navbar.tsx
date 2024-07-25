@@ -6,6 +6,7 @@ import logo from '../../assets/logo.png'
 import minilogo from '../../assets/mini.png'
 import Image from 'next/image'
 import { BsEye } from 'react-icons/bs';
+import Link from 'next/link';
 
 
 type NavbarProps = {
@@ -34,12 +35,12 @@ const Navbar = ({ setLinkCompisDisplayed, linkCompisDisplayed }: NavbarProps) =>
           <span className='hidden md:flex'>Profile Details</span>
         </button>
       </div>
-      <button
+      <Link href={'/preview'}
         className='py-2 px-4 flex items-center  justify-center text-primary border border-primary rounded-md'
       >
         <span className='flex md:hidden'><BsEye /></span>
         <span className='hidden md:flex'>Preview</span>
-      </button>
+      </Link>
     </div>
   )
 }

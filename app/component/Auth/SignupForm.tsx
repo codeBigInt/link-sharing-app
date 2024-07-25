@@ -48,8 +48,8 @@ const SignupForm = (props: FormChange) => {
                 const res = await createUserWithEmailAndPassword(auth, data.email, data.password)
                 console.log(res);
                 router.push('/profile')
-                reset()
                 setLoading(false);
+                reset()
 
             } catch (error: unknown) {
                 const errorMsg = (error as Error).message;

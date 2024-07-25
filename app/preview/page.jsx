@@ -32,7 +32,7 @@ const page = () => {
                                     <span>Github</span>
                                 </span>
                                 <span><FaArrowRight /></span>
-                            </Link>
+                            </Link>b
                             <Link className='flex items-center bg-red p-4 w-full rounded-lg justify-between text-white' href='/'>
                                 <span className='flex items-center gap-2'>
                                     <span><FaYoutube/></span>
