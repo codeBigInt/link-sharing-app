@@ -9,7 +9,7 @@ interface CustomDropdownProps {
   icons: React.ReactNode[];
 }
 
-const CustomDropdown: React.FC<CustomDropdownProps> = ({ options, value, onChange, placeholder = "Select an option", icons }) => {
+const CustomDropdown= ({ options, value, onChange, placeholder = "Select an option", icons }: CustomDropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedIcon, setSelectedIcon] = useState<React.ReactNode>(null);
 

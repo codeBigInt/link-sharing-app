@@ -1,3 +1,8 @@
+'use client'
+import { auth } from "@/app/firebase/config";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { PiEnvelopeSimpleFill } from "react-icons/pi";
 import { PiLockKeyFill } from "react-icons/pi";
@@ -12,19 +17,49 @@ type FormChange = {
 
 const Login = (props: FormChange) => {
     //creating useState to store requirement states
-    const { register, handleSubmit, watch, reset } = useForm<FormFields>();
-
+    const [errMessage, setErrMessage] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [formIsValid, setFormIsValid] = useState(false);
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FormFields>();
     const watchForEmail = watch("email", "");
     const watchForPassword = watch("password", "");
+    const router = useRouter()
 
-    //Server logic for form submission
+    useEffect(() => {
+        const IsFormValid =
+            watchForEmail.length > 5 &&
+            watchForEmail.toLowerCase().includes('@') &&
+            watchForEmail.toLowerCase().includes('.com') &&
+            watchForPassword.length > 8
+
+        IsFormValid ? setFormIsValid(true) : setFormIsValid(false)
+
+    }, [watchForEmail, watchForPassword]);
+
     async function onSubmit(data: FormFields) {
+        setLoading(true);
+        if (formIsValid) {
+            try {
+                const res = await signInWithEmailAndPassword(auth, data.email, data.password)
+                console.log(res);
+                reset();
+                router.push('/profile')
+                setLoading(false);
+            } catch (error: unknown) {
+                const errorMsg = (error as Error).message;
+                error ? setErrMessage(errorMsg) : setErrMessage('')
+                setLoading(false)
+            }
+        } else {
+            setErrMessage('Invalid email or password');
+            setLoading(false)
+        }
 
-        console.log(data);
     }
 
     return (
-        <div className="w-full md:w-[70%] text-dark-light lg:w-[50%] flex">
+        <div className="w-full md:w-[60%] text-dark-light lg:w-[50%] flex flex-col">
+            {errMessage && <p className="text-red text-[18px] pb-2">{errMessage}</p>}
             <form
                 className="flex w-full flex-col gap-8 md:shadow-md px-4 md:px-8 py-10 rounded-lg bg-white md:w-[674px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -36,40 +71,42 @@ const Login = (props: FormChange) => {
                 <div className="flex flex-col gap-4">
                     <div className="flex flex-col w-full gap-2">
                         <label htmlFor="cuurent-password">Email address</label>
-                        <div className="flex items-center gap-2 w-full rounded-md border border-gray px-4">
-                            <span>
+                        <div className="flex items-center gap-2 relative w-full rounded-md border">
+                            <span className="text-18px absolute left-4 top-[38%] z-10">
                                 <PiEnvelopeSimpleFill className="text-18px" />
                             </span>
                             <input
-                                className="outline-none flex-1 p-4"
+                                className={`outline-none flex-1 relative border-gray pl-12 px-4 p-4 focus:ring-1 focus:ring-primary rounded-lg ${errors.password && 'border-red focus:ring-0 border'}`}
                                 {...register("email", {
-                                    required: true,
+                                    required: 'cant be empty',
                                 })}
                                 placeholder="eg.alex@email.com"
                                 type="email"
                             />
-
+                            {errors.email && <p className="text-red text-[12px] absolute right-2 top-[32%]">{errors.email.message}</p>}
                         </div>
                     </div>
                     <div className="flex flex-col w-full gap-4">
                         <label htmlFor="new-password">Password</label>
-                        <div className="flex items-center gap-2 w-full rounded-md border border-gray px-4">
-                            <span>
+                        <div className="flex items-center gap-2 relative w-full rounded-md border">
+                            <span className="text-18px absolute left-4 top-[38%] z-10">
                                 <PiLockKeyFill className="text-18px" />
                             </span>
                             <input
-                                className="outline-none flex-1 p-4"
+                               className={`outline-none flex-1 relative border-gray pl-12 px-4 p-4 focus:ring-1 focus:ring-primary rounded-lg ${errors.password && 'border-red focus:ring-0 border'}`}
                                 type="password"
                                 {...register("password", {
-                                    required: true,
+                                    required: 'Please check again',
+                                    minLength: {value: 8, message: 'Please chech again'}
                                 })}
                                 placeholder="Enter your password"
                             />
+                            {errors.password && <p className="text-red text-[12px] absolute right-2 top-[32%]">{errors.password.message}</p>}
                         </div>
                     </div>
                 </div>
                 <button type="submit" className="bg-primary p-[11px] rounded-lg text-[18px] text-white">
-                    Login
+                    {loading ? 'Loading...' : 'Login'}
                 </button>
                 <p
                     className="text-center flex flex-col md:flex-row md:justify-center gap-4 items-center md:gap-[.2em]">

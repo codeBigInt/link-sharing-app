@@ -14,14 +14,14 @@ const useLinksManager = () => {
     };
 
     const removeLink = (index: number) => {
-        setLinks(links.filter((_, i) => i !== index));
+        const updatedLinks = [...links.slice(0, index), ...links.slice(index + 1)];
+        setLinks(updatedLinks);
     };
 
     const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const values = [...links];
         values[index][event.target.name as keyof Link] = event.target.value;
         setLinks(values);
-        console.log(links);
     };
 
     const handlePlatformChange = (index: number, value: string) => {
@@ -40,13 +40,9 @@ const useLinksManager = () => {
             link.includes('.edu') || link.includes('.gov'));
         if (isValid) {
             setPhoneLink([...links]);
-            console.log(phoneLink);
-            
-
         } else {
             alert('Please fill in all the required fields for each link.');
         }
-        console.log('Links saved:', links);
     }
 
     return {

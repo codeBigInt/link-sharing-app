@@ -1,10 +1,11 @@
 'use client'
 import Navbar from '../component/navbar/Navbar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from '../component/profile-setup/LinkComp'
 import LinkManager from '../component/profile-setup/ProfileDetail'
 import DisplayScreen from '../component/profile-setup/DisplayScreen'
 import ProfileDetail from '../component/profile-setup/ProfileDetail'
+import useLinksManager from '../customHookes/useLinkManager'
 
 interface Link {
   platform: string,
@@ -12,8 +13,8 @@ interface Link {
 }
 
 const ProfileSetupPage = () => {
-  const [links, setLinks] = useState<Link[]>([])
   const [linkCompisDisplayed, setLinkCompisDisplayed] = React.useState(true)
+  
 
   return (
     <div className='bg-[#fafafa] min-h-screen md:p-6 flex flex-col items-center'>

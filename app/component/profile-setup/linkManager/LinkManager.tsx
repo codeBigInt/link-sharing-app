@@ -3,20 +3,6 @@ import { FaFacebook, FaGithub, FaInstagram, FaLinkedin, FaTwitter } from 'react-
 import { LuLink } from "react-icons/lu";
 import { RiEqualFill } from "react-icons/ri";
 import CustomDropdown from './CustomDropDown';
-import useLinksManager from '@/app/customHookes/useLinkManager';
-
-// type LinkProp = {
-//     links: {
-//         platform: string,
-//         link: string,
-//     }[];
-//     handleInputChange: (index: number, e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-//     handlePlatformChange: (index: number, value: string) => void;
-//     removeLink: (index: number) => void;
-//     iconsToDisplay: {
-//         icon: React.ReactNode
-//     }[]
-// }
 
 
 type Link = {

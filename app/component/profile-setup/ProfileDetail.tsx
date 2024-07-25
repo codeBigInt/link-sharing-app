@@ -45,8 +45,8 @@ const ProfileDetail = () => {
         <p>Add your details to create a personal touch to your profile.</p>
       </div>
       <div className='p-4 flex gap-4 text-[12px] bg-gray-light my-8 rounded-lg'>
-        <div className='w-[33.3%] rounded-lg h-[193px] flex items-center'>Profile picture</div>
-        <label htmlFor='pictureUpload' className='w-[33.3%] bg-primary-lighter text-primary rounded-lg h-[193px] flex flex-col items-center justify-center text-center cursor-pointer'>
+        <div className='w-[33.3%] rounded-lg h-[193px] hidden md:flex items-center'>Profile picture</div>
+        <label htmlFor='pictureUpload' className='md:w-[33.3%] w-[70%] bg-primary-lighter text-primary rounded-lg md:h-[193px] h-[230px] flex flex-col items-center justify-center text-center cursor-pointer'>
           <span className="text-[40px]"><LiaImageSolid /></span>
           <p className="mt-2 text-sm">+ Upload Image</p>
           <input
@@ -60,7 +60,7 @@ const ProfileDetail = () => {
             <p className="mt-2 text-sm text-gray-700">Selected file: {selectedFile.name}</p>
           )}
         </label>
-        <div className='w-[33.3%] rounded-lg flex flex-col justify-center h-[193px]'>
+        <div className='w-[33.3%] rounded-lg hidden md:flex flex-col justify-center h-[193px]'>
           <span>Image must be 1024&times;1024px</span>
           <span>Use PNG or JPG format.</span>
         </div>

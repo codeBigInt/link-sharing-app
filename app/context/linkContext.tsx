@@ -1,80 +1,73 @@
-// 'use client'
-// import { ChangeEvent, useState } from "react";
-// import { FaFacebook, FaGithub, FaLinkedin } from "react-icons/fa";
-// import { FaX } from "react-icons/fa6";
-// import { PiEmpty } from "react-icons/pi";
-// import { createContext } from "vm";
+// src/context/LinksContext.tsx
+'use client'
+import React, { createContext, useContext, useState, ReactNode } from 'react';
+
+type Link = {
+  platform: string;
+  link: string;
+};
+
+type LinksContextType = {
+  links: Link[];
+  phoneLink: Link[];
+  addLink: () => void;
+  removeLink: (index: number) => void;
+  handleInputChange: (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
+  handlePlatformChange: (index: number, value: string) => void;
+  saveLinks: () => void;
+};
+
+export const LinksContext = createContext<LinksContextType | undefined>(undefined);
+
+export const LinksProvider = ({ children }: { children: ReactNode }) => {
+  const [links, setLinks] = useState<Link[]>([]);
+  const [phoneLink, setPhoneLink] = useState<Link[]>([]);
+
+  const addLink = () => {
+    setLinks([...links, { platform: '', link: '' }]);
+  };
+
+  const removeLink = (index: number) => {
+    setLinks(links.filter((_, i) => i !== index));
+  };
+
+  const handleInputChange = (index: number, event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    const values = [...links];
+    values[index][event.target.name as keyof Link] = event.target.value;
+    setLinks(values);
+  };
+
+  const handlePlatformChange = (index: number, value: string) => {
+    const newLinks = [...links];
+    newLinks[index] = { ...newLinks[index], platform: value };
+    setLinks(newLinks);
+  };
+
+  const saveLinks = () => {
+    const isValid = links.every(({ platform, link }) =>
+      platform &&
+      (link.startsWith('http://') || link.startsWith('https://')) &&
+      (link.includes('.com') || link.includes('.org') || link.includes('.net') || link.includes('.edu') || link.includes('.gov'))
+    );
+    if (isValid) {
+      setPhoneLink([...links]);
+    } else {
+      alert('Please fill in all the required fields for each link.');
+    }
+  };
+
+  return (
+    <LinksContext.Provider value={{ links, phoneLink, addLink, removeLink, handleInputChange, handlePlatformChange, saveLinks }}>
+      {children}
+    </LinksContext.Provider>
+  );
+};
 
 
-// type LinkContextType = {
-//     links: {
-//       platform: string;
-//       link: string;
-//     }[];
-//     handleInputChange: (index: number, e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-//     handlePlatformChange: (index: number, value: string) => void;
-//     removeLink: (index: number) => void;
-//     iconsToDisplay: {
-//       icon: React.ReactNode;
-//     }[];
-//     children: React.ReactNode
-//   }
-
-// type LinkContextProp = {
-//     children: React.ReactNode;
-// }
-
-
-// export const linkContext = createContext({})
-
-
-
-// export const LinkProvider = ({ children }: LinkContextType) => {
-//     const iconToDisplay: { icon: React.ReactNode }[] = [
-//         { icon: <PiEmpty /> },
-//         { icon: <FaGithub /> },
-//         { icon: <FaLinkedin /> },
-//         { icon: <FaFacebook /> },
-//         { icon: <FaX /> }
-//     ];
-//     const [icon, setIcon] = useState<React.ReactNode>(iconToDisplay[0].icon)
-//     const [links, setLinks] = useState<LinkContextType[]>([])
-    
-    
-//     const addLink = () => {
-//         setLinks([...links, { platform: '', link: '' }]);
-//     };
-    
-//     const removeLink = (index: number) => {
-//         setLinks(links.filter((_, i) => i !== index));
-//     };
-    
-//     const handleInputChange = (index: number, event: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-//         const values = [...links];
-//         values[index][event.target.name as keyof Link] = event.target.value;
-//         setLinks(values);
-//         console.log(links);
-    
-//     };
-//     const handlePlatformChange = (index: number, value: string) => {
-//         const newLinks = [...links];
-//         newLinks[index] = { ...newLinks[index], platform: value };
-//         setLinks(newLinks);
-//     };
-
-//     const values = {
-//         links,
-//         addLink,
-//         removeLink,
-//         handleInputChange,
-//         handlePlatformChange,
-//         icon,
-//         setIcon,
-//         iconToDisplay,
-//     }
-//     return (
-//         <linkContext.Provider value={values}>
-//             {children}
-//         </linkContext.Provider>
-//     )
-// }
+export const useLinksManager = (): LinksContextType => {
+    const context = useContext(LinksContext);
+    if (!context) {
+      throw new Error('useLinksManager must be used within a LinksProvider');
+    }
+    return context;
+  };

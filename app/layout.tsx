@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Instrument_Sans } from "next/font/google";
 import "./globals.css";
+import { LinksProvider } from "./context/linkContext";
 
 const instrument = Instrument_Sans({ subsets: ["latin"] });
 
@@ -17,8 +18,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={instrument.className}>
+        <LinksProvider>
           {children}
+        </LinksProvider>
       </body>
     </html>
   );
 }
+
