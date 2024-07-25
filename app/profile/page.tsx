@@ -21,9 +21,9 @@ const ProfileSetupPage = () => {
   const [user] = useAuthState(auth)
   const userSession = localStorage.getItem('user')
 
-  // if (!user && !userSession) {
-  //   router.push('/')
-  // }
+  if (!user && !userSession) {
+    router.push('/')
+  }
 
   console.log(user);
 
