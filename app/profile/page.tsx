@@ -20,7 +20,6 @@ const ProfileSetupPage = () => {
   const router = useRouter()
   const [user] = useAuthState(auth)
   const userSession = localStorage.getItem('user')
-  // const email = JSON.parse(userSession)
 
   // if (!user && !userSession) {
   //   router.push('/')
@@ -34,15 +33,9 @@ const ProfileSetupPage = () => {
       <Navbar setLinkCompisDisplayed={setLinkCompisDisplayed} linkCompisDisplayed={linkCompisDisplayed} />
       <div className='w-full mt-6 rounded-md flex flex-col lg:flex-row gap-10'>
         <div className='lg:w-[38.89%] relative hidden lg:flex justify-center items-center shadow-sm rounded-md p-6 w-full min-h-[834px] bg-white'>
-          <div className='w-[80%]'>
-            <div className="relative mx-auto border-gray bg-gray border-[14px] rounded-[2.5rem] h-[600px] w-[300px]">
-              <div className="h-[32px] w-[3px]  bg-gray absolute -left-[17px] top-[72px] rounded-l-lg"></div>
-              <div className="h-[46px] w-[3px]  bg-gray absolute -left-[17px] top-[124px] rounded-l-lg"></div>
-              <div className="h-[46px] w-[3px]  bg-gray absolute -left-[17px] top-[178px] rounded-l-lg"></div>
-              <div className="h-[64px] w-[3px]  bg-gray absolute -right-[17px] top-[142px] rounded-r-lg"></div>
-              <div className="w-[60%] h-[24px]  bg-gray absolute right-[20%] top-[0] rounded-b-lg"></div>
-              <div style={{}} className="rounded-[2rem] py-6 flex flex-col justify-center items-center no-scrollbar overflow-hidden overflow-y-scroll w-[272px] h-[572px] bg-white">
-                {links.length > 0 ? '' : <div className='w-full flex flex-col gap-6 items-center pt-[80px]'>
+          <div className='w-[75%] relative bg-transparent rounded-[40px] border-dark-light flex items-center justify-center border h-[600px] p-2'>
+            <div className='h-[100%] relative w-full border-dark-light bg-white border-[1px] rounded-[40px]'>
+            {links.length > 0 ? '' : <div className='w-full flex flex-col gap-6 items-center pt-[80px]'>
                   <div className='w-full flex flex-col items-center justify-center gap-2'>
                     <div className='w-[96px] h-[96px] rounded-full bg-gray'></div>
                     <h3 className='p-4 w-[80%] rounded-xl bg-gray'></h3>
@@ -53,29 +46,18 @@ const ProfileSetupPage = () => {
                     <p className='p-6 w-[80%] rounded-xl bg-gray'></p>
                     <p className='p-6 w-[80%] rounded-xl bg-gray'></p>
                     <p className='p-6 w-[80%] rounded-xl bg-gray'></p>
-                </div>
+                  </div>
                 </div>
                 }
-                {/* <p className='mt-30'>{user?.email}</p> */}
-                {
-                  links.map((addLink) => (
-                    <Link className='bg-red w-full p-4' href={addLink.link} key={addLink.platform}>
-                      <span>
-                        <span></span>
-                        <span>{addLink.platform}</span>
-                      </span>
-                      <span><FaArrowRight /></span>
-                    </Link>
-                  ))
-                }
-              </div>
             </div>
+            <div className='p-4 border-b-[1px] absolute border-dark-light border-r-[1px] w-[60%] top-2 bg-white border-l-[1px] rounded-b-[25px]'></div>
           </div>
         </div>
         <div className='lg:w-[60.11%] w-full relative bg-transparent rounded-lg lg:bg-white p-4 flex flex-col text-dark-light gap-12'>
           {linkCompisDisplayed ? <LinkComp /> : <ProfileDetail />}
         </div>
       </div>
+      
     </div>
   )
 }
