@@ -34,7 +34,7 @@ const SignupForm = (props: FormChange) => {
             watchForEmail.toLowerCase().includes('@') &&
             watchForEmail.toLowerCase().includes('.com') &&
             watchForPassword === watchForConfirmPassword &&
-            watchForPassword.length > 8
+            watchForPassword.length >= 8
 
         IsFormValid ? setFormIsValid(true) : setFormIsValid(false)
 
@@ -47,15 +47,20 @@ const SignupForm = (props: FormChange) => {
             try {
                 const res = await createUserWithEmailAndPassword(auth, data.email, data.password)
                 console.log(res);
-                router.push('/profile')
-                setLoading(false);
-                reset()
+                if (res) {
+                    router.push('/profile')
+                    setLoading(false);
+                }else{
+                    setErrMessage('There was an issue logging you in')
+                }
 
             } catch (error: unknown) {
                 const errorMsg = (error as Error).message;
                 error ? setErrMessage(errorMsg) : setErrMessage('')
+                setLoading(false)
             }
         } else {
+            setErrMessage('Invalid email or password');
             setLoading(false)
         }
 
@@ -100,7 +105,7 @@ const SignupForm = (props: FormChange) => {
                                 type="password"
                                 {...register("password", {
                                     required: 'Please check again',
-                                    minLength: {value: 8, message: 'Please chech again'}
+                                    minLength: { value: 8, message: 'Please chech again' }
                                 })}
                                 placeholder="At least 8 characters"
                             />
@@ -118,7 +123,7 @@ const SignupForm = (props: FormChange) => {
                                 className={`outline-none flex-1 relative border-gray pl-12 px-4 p-4 focus:ring-1 focus:ring-primary rounded-lg ${errors.password && 'border-red focus:ring-0 border'}`}
                                 {...register("confirmPassword", {
                                     required: 'Please check again',
-                                    minLength: {value: 8, message: 'Please chech again'}
+                                    minLength: { value: 8, message: 'Please chech again' }
                                 })}
                                 placeholder="At least 8 characters"
                                 type="password"
@@ -127,6 +132,7 @@ const SignupForm = (props: FormChange) => {
                         </div>
                     </div>
                 </div>
+                {errMessage && <p className="text-red text-[18px] pb-2">{errMessage}</p>}
                 <button type="submit" className={`bg-primary p-[11px] rounded-lg text-[18px] text-white`}>
                     {loading ? 'Loading...' : 'Create account'}
                 </button>

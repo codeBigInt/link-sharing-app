@@ -30,7 +30,7 @@ const Login = (props: FormChange) => {
             watchForEmail.length > 5 &&
             watchForEmail.toLowerCase().includes('@') &&
             watchForEmail.toLowerCase().includes('.com') &&
-            watchForPassword.length > 8
+            watchForPassword.length >= 8
 
         IsFormValid ? setFormIsValid(true) : setFormIsValid(false)
 
@@ -42,9 +42,12 @@ const Login = (props: FormChange) => {
             try {
                 const res = await signInWithEmailAndPassword(auth, data.email, data.password)
                 console.log(res);
-                reset();
-                router.push('/profile')
-                setLoading(false);
+                if (res) {
+                    router.push('/profile')
+                    setLoading(false);
+                }else{
+                    setErrMessage('There was an issue logging you in')
+                }
             } catch (error: unknown) {
                 const errorMsg = (error as Error).message;
                 error ? setErrMessage(errorMsg) : setErrMessage('')
@@ -59,7 +62,6 @@ const Login = (props: FormChange) => {
 
     return (
         <div className="w-full md:w-[60%] text-dark-light lg:w-[50%] flex flex-col">
-            {errMessage && <p className="text-red text-[18px] pb-2">{errMessage}</p>}
             <form
                 className="flex w-full flex-col gap-8 md:shadow-md px-4 md:px-8 py-10 rounded-lg bg-white md:w-[674px]"
                 onSubmit={handleSubmit(onSubmit)}
@@ -93,11 +95,11 @@ const Login = (props: FormChange) => {
                                 <PiLockKeyFill className="text-18px" />
                             </span>
                             <input
-                               className={`outline-none flex-1 relative border-gray pl-12 px-4 p-4 focus:ring-1 focus:ring-primary rounded-lg ${errors.password && 'border-red focus:ring-0 border'}`}
+                                className={`outline-none flex-1 relative border-gray pl-12 px-4 p-4 focus:ring-1 focus:ring-primary rounded-lg ${errors.password && 'border-red focus:ring-0 border'}`}
                                 type="password"
                                 {...register("password", {
                                     required: 'Please check again',
-                                    minLength: {value: 8, message: 'Please chech again'}
+                                    minLength: { value: 8, message: 'Please chech again' }
                                 })}
                                 placeholder="Enter your password"
                             />
@@ -105,6 +107,7 @@ const Login = (props: FormChange) => {
                         </div>
                     </div>
                 </div>
+                {errMessage && <p className="text-red text-[18px] pb-2">{errMessage}</p>}
                 <button type="submit" className="bg-primary p-[11px] rounded-lg text-[18px] text-white">
                     {loading ? 'Loading...' : 'Login'}
                 </button>
