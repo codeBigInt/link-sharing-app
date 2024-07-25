@@ -48,6 +48,7 @@ const SignupForm = (props: FormChange) => {
                 const res = await createUserWithEmailAndPassword(auth, data.email, data.password)
                 console.log(res);
                 if (res) {
+                    localStorage.setItem('user', JSON.stringify(res.user))
                     router.push('/profile')
                     setLoading(false);
                 }else{

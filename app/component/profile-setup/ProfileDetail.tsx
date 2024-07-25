@@ -15,14 +15,14 @@ const ProfileDetail = () => {
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const { register, handleSubmit, watch, reset } = useForm<FormFields>();
 
-    const watchForEmail = watch("firstname", "");
-    const watchForPassword = watch("lastname", "");
+  const watchForEmail = watch("firstname", "");
+  const watchForPassword = watch("lastname", "");
 
-    //Server logic for form submission
-    async function onSubmit(data: FormFields) {
+  //Server logic for form submission
+  async function onSubmit(data: FormFields) {
 
-        console.log(data);
-    }
+    console.log(data);
+  }
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -46,7 +46,7 @@ const ProfileDetail = () => {
       </div>
       <div className='p-4 flex gap-4 text-[12px] bg-gray-light my-8 rounded-lg'>
         <div className='w-[33.3%] rounded-lg h-[193px] hidden md:flex items-center'>Profile picture</div>
-        <label htmlFor='pictureUpload' className='md:w-[33.3%] w-[70%] bg-primary-lighter text-primary rounded-lg md:h-[193px] h-[230px] flex flex-col items-center justify-center text-center cursor-pointer'>
+        <label htmlFor='pictureUpload' className='md:w-[33.3%] w-[80%] bg-primary-lighter text-primary rounded-lg md:h-[193px] h-[230px] flex flex-col items-center justify-center text-center cursor-pointer'>
           <span className="text-[40px]"><LiaImageSolid /></span>
           <p className="mt-2 text-sm">+ Upload Image</p>
           <input
@@ -65,46 +65,50 @@ const ProfileDetail = () => {
           <span>Use PNG or JPG format.</span>
         </div>
       </div>
-      <div className='p-4 flex gap-4 text-[12px] bg-gray-light my-8 rounded-lg'>
+      <div className='md:p-4 flex gap-4 text-[12px] bg-gray-light my-8 rounded-lg'>
         <form
           className="flex w-full flex-col gap-8 px-1 md:px-8 py-10 rounded-lg bg-transparnt md:w-[674px]"
           onSubmit={handleSubmit(onSubmit)}
         >
           {/* <div className="flex flex-col gap-4"> */}
-            <div className="flex items-center w-full gap-2">
-              <label htmlFor="firstname" className='w-[20%]'>Firstname*</label>
-                <input
-                  className="border border-gray rounded-lg flex-1 p-4"
-                  {...register("firstname", {
-                    required: true,
-                  })}
-                  placeholder="eg John"
-                  type="email"
-                />
-            </div>
-            <div className="flex items-center w-full gap-4">
-              <label htmlFor="lastname" className='w-[20%]'>Lastname*</label>
-              <input
-                className="border border-gray rounded-lg flex-1 p-4"
-                type="password"
-                {...register("lastname", {
-                  required: true,
-                })}
-                placeholder="Appleseed"
-              />
-            </div>
-            <div className="flex items-center w-full gap-4">
-              <label htmlFor="email" className='w-[20%]'>Email</label>
-              <input
-                className="border border-gray rounded-lg flex-1 p-4"
-                type="password"
-                {...register("email")}
-                placeholder="eg exaample@gmail.com"
-              />
-            </div>
-            <div className="flex w-full gap-4">
+          <div className="flex flex-col md:flex-row md:items-center w-full gap-2">
+            <label htmlFor="firstname" className='w-[20%]'>Firstname*</label>
+            <input
+              className="border border-gray rounded-lg w-full flex-1 p-4"
+              {...register("firstname", {
+                required: true,
+              })}
+              placeholder="eg John"
+              type="email"
+            />
+          </div>
+          <div className="flex flex-col md:flex-row md:items-center w-full gap-2">
+            <label htmlFor="lastname" className='w-[20%]'>Lastname*</label>
+            <input
+              className="border border-gray rounded-lg w-full flex-1 p-4"
+              type="password"
+              {...register("lastname", {
+                required: true,
+              })}
+              placeholder="Appleseed"
+            />
+          </div>
+          <div className="flex flex-col md:flex-row md:items-center w-full gap-2">
+            <label htmlFor="email" className='w-[20%]'>Email</label>
+            <input
+              className="border border-gray rounded-lg w-full flex-1 p-4"
+              type="password"
+              {...register("email")}
+              placeholder="eg exaample@gmail.com"
+            />
+          </div>
+          <div className="flex w-full gap-4">
           </div>
         </form>
+      </div>
+      <div className='border-t-[1px] left-0 bg-white bottom-0 self-center mt-[30px] md:absolute w-full border-primary-light md:p-8 p-4 flex justify-end'>
+        <button
+          className={`py-2 px-6 rounded-md bg-primary text-white`}>Save</button>
       </div>
     </Card>
   )
