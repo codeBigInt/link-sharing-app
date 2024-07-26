@@ -11,7 +11,7 @@ import useLinksManager from '@/app/customHookes/useLinkManager'
 
 
 const LinkComp = () => {
-    const { links, handleInputChange, handlePlatformChange, removeLink, addLink, saveLinks } = useLinksManager()
+    const { links, handleInputChange, handlePlatformChange, removeLink, addLink, saveLinks, saving } = useLinksManager()
 
     const content =
         links.length > 0 ?
@@ -49,7 +49,9 @@ const LinkComp = () => {
                     <button
                         onClick={saveLinks}
                         disabled={links.length > 0 ? false : true}
-                        className={`py-2 px-6 rounded-md bg-primary ${links.length > 0 ? '' : 'opacity-50'}  text-white`}>Save</button>
+                        className={`py-2 px-6 rounded-md bg-primary ${links.length > 0 ? '' : 'opacity-50'}  text-white`}>
+                            {saving? 'Saving...' : 'Save'}
+                        </button>
                 </div>
             </Card>
         </div>
